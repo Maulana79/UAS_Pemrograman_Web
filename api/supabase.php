@@ -1,23 +1,24 @@
 <?php
-// FILE: api/supabase.php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+// api/supabase.php
+// MENGHUBUNGKAN KE MYSQL INFINITYFREE
 
 require_once __DIR__ . '/bootstrap.php';
 require_once __DIR__ . '/response_helper.php';
 
 try {
-    // Ambil dari .env via bootstrap.php
-    $host = get_env('SUPABASE_HOST');
-    $port = get_env('SUPABASE_PORT');
-    $db   = get_env('SUPABASE_DB');
-    $user = get_env('SUPABASE_USER');
-    $pass = get_env('SUPABASE_PASS');
+    // Ambil data dari .env
+    $host = get_env('DB_HOST');
+    $db   = get_env('DB_NAME');
+    $user = get_env('DB_USER');
+    $pass = get_env('DB_PASS');
 
-    // Debugging: Jika masih error, uncomment baris ini untuk lihat apakah env terbaca
-    // if (!$host) die("❌ Error: .env tidak terbaca. Cek api/bootstrap.php");
+    // Cek apakah .env terbaca
+    if (!$host || !$user) {
+        throw new Exception("File .env tidak terbaca atau kosong.");
+    }
 
-    $dsn = "pgsql:host=$host;port=$port;dbname=$db;sslmode=require";
+    // String Koneksi MySQL
+    $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
     
     $options = [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -28,5 +29,6 @@ try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 
 } catch (\PDOException $e) {
-    die("<h1>Koneksi Gagal:</h1> " . $e->getMessage());
+    // Tampilkan error jika gagal
+    die("<h1>Koneksi MySQL Gagal:</h1> " . $e->getMessage());
 }
