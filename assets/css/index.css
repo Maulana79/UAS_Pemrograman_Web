@@ -1,0 +1,1219 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    background-color: #fff;
+    overflow-x: hidden; 
+}
+
+/* --- Header & Navigation Bar --- */
+header {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+.logo img {
+    height: 50px; 
+    margin-right: 10px;
+}
+
+.logo span {
+    font-size: 0.65em;
+    font-weight: 500;
+    line-height: 1.1;
+    color: #8ac926; 
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover, nav ul li a.active {
+    color: #8ac926;
+}
+
+
+/* --- Hero Banner (Dengan Gambar Statis) --- */
+.hero-banner {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 60px;
+}
+
+.hero-bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Overlay gelap */
+    z-index: -1;
+}
+
+.hero-content {
+    color: #fff;
+    z-index: 1;
+}
+
+.hero-content h1 {
+    font-size: 3em;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.hero-content p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.btn-reservasi {
+    display: inline-block;
+    background-color: #8ac926;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-reservasi:hover {
+    background-color: #6a9c1e;
+}
+
+
+
+/* --- Category Section (Pilih Kategori Wisata) --- */
+.category-section {
+    padding: 60px 5%;
+    text-align: center;
+    background-color: #eeeeee;
+}
+
+.category-section h2 {
+    font-size: 1.8em;
+    font-weight: 600;
+    margin-bottom: 40px;
+    color: #1e2a38;
+}
+
+.category-grid {
+    display: flex;
+    justify-content: space-between; /* Untuk meratakan antar kartu */
+    gap: 20px;
+    flex-wrap: nowrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+.category-card {
+    position: relative;
+    /* UKURAN AKHIR: Besar dan memenuhi lebar container */
+    width: 23.5%; 
+    flex-shrink: 0;
+    height: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+/* LAPISAN HITAM (::before) - DEFAULT TRANSPARAN */
+.category-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.0) 0%, transparent 50%);
+    transition: background 0.3s ease;
+    z-index: 1;
+}
+
+.category-card:hover::before {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%);
+}
+
+
+.category-card a {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-decoration: none;
+    color: #fff; /* Warna teks putih */
+    font-size: 1.1em;
+    font-weight: 700;
+    z-index: 2;
+    padding: 0;
+    background-color: transparent;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    transition: bottom 0.3s ease;
+    white-space: nowrap;
+}
+
+
+.category-card:hover a {
+    bottom: 20px;
+}
+
+
+/* --- 5 BEST DESTINATION Section --- */
+.best-destination-section {
+    padding: 60px 5%;
+    text-align: center;
+    background-color: #f0f5f1;
+}
+
+.best-destination-section h2 {
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+.destination-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: nowrap; /* Memastikan 5 kartu tetap sebaris */
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+.destination-card {
+    position: relative;
+    width: 210px; /* Lebar untuk menampung 5 kartu di 1200px */
+    flex-shrink: 0;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.destination-card:hover {
+    transform: translateY(-5px);
+}
+
+.destination-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+    justify-content: flex-end; 
+    color: #fff;
+    padding: 15px; 
+    height: 100%;
+    transition: background 0.3s ease;
+}
+.destination-card:hover .card-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 40%);
+}
+
+.card-overlay h3 {
+    font-size: 0.8em;
+    font-weight: 600;
+    margin: 0 0 5px 0; 
+    text-transform: uppercase;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    text-align: left;
+    width: 100%; 
+}
+
+.visit-btn {
+    text-decoration: none;
+    color: #fff;
+    font-size: 0.8em;
+    font-weight: 700;
+    padding: 5px 0; /* Hapus padding horizontal, hanya sisakan vertical */
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    transition: all 0.3s;
+    /* Pastikan tombol rata kiri */
+    align-self: flex-start; 
+}
+
+/* ELEMEN HOVER PADA TOMBOL VISIT */
+.visit-btn:hover {
+    color: #fefefe;
+    border-color: #fdfdfd; 
+    background-color: rgba(247, 247, 247, 0.1);
+}
+
+/* --- Review Section --- */
+.review-section {
+    background-color: #faebd7;
+    padding: 40px 20px;
+    border-radius: 10px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.review-section h2 {
+    font-size: 1.8em;
+    margin-bottom: 30px;
+    font-weight: 700;
+    color: #333;
+}
+
+.review-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.review-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 300px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+}
+
+.review-card p {
+    font-size: 1.1em;
+    font-style: italic;
+    margin-bottom: 10px;
+    min-height: 70px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.review-card .stars {
+    color: #f7b731;
+    font-size: 1.5em;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.review-destination {
+    display: block;
+    font-size: 0.95em;
+    font-weight: 700;
+    color: #1e2a38;
+    margin-top: 5px;
+    text-align: center;
+    border-top: 2px dashed #eee;
+    padding-top: 10px;
+    text-transform: uppercase;
+}
+
+/* --- Footer Section --- */
+.footer-section {
+    background-color: #1e2a38;
+    color: #fff;
+    padding: 40px 20px 20px 20px;
+    font-size: 0.9em;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: 0 auto 30px auto;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-col {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px;
+}
+
+.footer-col h3 {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.footer-col h4 {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 8px;
+}
+
+.footer-col ul li a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-col ul li a:hover {
+    color: #fff;
+}
+
+.contact-info p {
+    margin-bottom: 10px;
+    color: #ccc;
+}
+
+.contact-info i {
+    margin-right: 10px;
+    color: #8ac926;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #3f4a56;
+    max-width: 1200px;
+    margin: 0 auto 20px auto;
+}
+
+.copyright {
+    text-align: center;
+    color: #ccc;
+}
+
+
+/* Hero Banner Halaman NATURE */
+.nature-hero-banner {
+    background: url('foto/PantaiManggarSegarasari-4.webp') no-repeat center center/cover; 
+    height: 40vh; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    /* OFFSET YANG DITINGKATKAN AGAR TIDAK TERTUTUP HEADER */
+    margin-top: 80px; 
+    image-rendering: -webkit-optimize-contrast; 
+    image-rendering: crisp-edges;
+}
+
+.nature-hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4); 
+}
+
+.nature-hero-banner .hero-content {
+    z-index: 2;
+}
+
+/* Hero Banner Halaman ADVENTURE */
+.adventure-hero-banner {
+    background: url('foto/banneradventure1.jpg') no-repeat center center/cover; 
+    /* Ganti 'banneradventure.jpg' dengan URL gambar Anda */
+    height: 40vh; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    margin-top: 80px; 
+}
+/* Tambahkan overlay seperti di nature-hero-banner untuk adventure-hero-banner */
+.adventure-hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4); 
+}
+.adventure-hero-banner .hero-content {
+    z-index: 2;
+}
+.adventure-hero-banner h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.adventure-hero-banner p {
+    font-size: 1.1em;
+    font-weight: 400;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+
+/* Hero Banner Halaman CULTURE */
+.culture-hero-banner {
+    background: url('foto/bannerculture.jpg') no-repeat center center/cover; 
+    /* Ganti 'bannerculture.jpg' dengan URL gambar Anda */
+    height: 40vh; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    margin-top: 80px; 
+}
+/* Tambahkan overlay seperti di nature-hero-banner untuk culture-hero-banner */
+.culture-hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4); 
+}
+.culture-hero-banner .hero-content {
+    z-index: 2;
+}
+.culture-hero-banner h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.culture-hero-banner p {
+    font-size: 1.1em;
+    font-weight: 400;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Hero Banner Halaman FAMILY */
+.family-hero-banner {
+    background: url('foto/bannerfamily.jpg') no-repeat center center/cover; 
+    /* Ganti 'bannerfamily.jpg' dengan URL gambar Anda */
+    height: 40vh; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    margin-top: 80px; 
+}
+/* Tambahkan overlay seperti di nature-hero-banner untuk family-hero-banner */
+.family-hero-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4); 
+}
+.family-hero-banner .hero-content {
+    z-index: 2;
+}
+.family-hero-banner h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.family-hero-banner p {
+    font-size: 1.1em;
+    font-weight: 400;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* ==========================================================
+   4. KARTU DESTINASI 
+   ========================================================== */
+
+/* Kartu Destinasi*/
+.destination-card {
+    position: relative;
+    width: 210px; 
+    flex-shrink: 0;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.destination-card:hover {
+    transform: translateY(-5px);
+}
+
+.destination-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* OVERLAY KARTU (Implementasi Teks & Tombol Bertumpuk) */
+.card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    /* PENTING: MENGATUR STACK VERTICAL */
+    display: flex;
+    flex-direction: column; /* Menumpuk elemen secara vertikal */
+    align-items: flex-start; /* Rata kiri */
+    justify-content: flex-end; /* Konten menempel di bawah */
+    
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
+    color: #fff;
+    padding: 15px; 
+    height: 100%;
+    transition: background 0.3s ease;
+}
+
+.destination-card:hover .card-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 40%);
+}
+
+.card-overlay h3 {
+    font-size: 0.95em;
+    font-weight: 600;
+    margin: 0 0 5px 0; /* Jarak antara Nama Wisata dan Tombol VISIT */
+    text-transform: uppercase;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    text-align: left;
+    width: 100%;
+}
+
+.visit-btn {
+    text-decoration: none;
+    color: #fff;
+    font-size: 0.8em;
+    font-weight: 700;
+    padding: 5px 0;
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    transition: all 0.3s;
+    align-self: flex-start; /* Rata kiri */
+}
+
+.visit-btn:hover {
+    color: #8ac926;
+    border-color: #8ac926; 
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================
+   5. DESTINASI NATURE PAGE (LAYOUT SPESIFIK)
+   ========================================================== */
+.destinasi-kategori-section {
+    padding: 40px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.destinasi-kategori-section .section-title {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start; 
+}
+
+/* Filter Panel */
+.filter-panel {
+    flex-shrink: 0;
+    width: 250px; 
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.filter-panel h3 {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.select-wrapper {
+    position: relative;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.city-select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    appearance: none; 
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.select-wrapper::after {
+    content: 'v';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    pointer-events: none;
+    background-color: #fff;
+    color: #333;
+}
+
+/* Destination Grid (4 Kolom) */
+.destination-grid {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.destination-grid .destination-card {
+    width: auto; /* Override width tetap dari bagian 4 */
+    height: 250px;
+    /* Latar belakang abu-abu (placeholder) */
+    background-color: #ccc; 
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.page-btn {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    color: #333;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.page-btn.active {
+    background-color: #333;
+    color: #fff;
+    border-color: #333;
+}
+
+
+.footer-section {
+    background-color: #1e2a38;
+    color: #fff;
+    padding: 40px 20px 20px 20px;
+    font-size: 0.9em;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: 0 auto 30px auto;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+@media (max-width: 992px) {
+    .content-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+    .filter-panel {
+        width: 100%;
+        max-width: 350px;
+        margin-bottom: 20px;
+    }
+    .destination-grid {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+@media (max-width: 600px) {
+    .destination-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ======================================= */
+/* 2. STYLE UNTUK HALAMAN PEMESANAN (BOOKING) */
+/* ======================================= */
+
+.booking-main {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.booking-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+.booking-header h1 {
+    color: #007bff;
+    font-weight: 700;
+}
+
+.dest-info-summary {
+    font-size: 1.1em;
+    color: #555;
+}
+
+.price-display {
+    font-weight: 600;
+    color: #333;
+    margin-left: 10px;
+}
+
+/* Tata Letak Grid untuk Formulir dan Ringkasan */
+.booking-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Form lebih besar (2/3), Summary lebih kecil (1/3) */
+    gap: 30px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Container Formulir */
+.booking-form-container h2 {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-group label i {
+    margin-right: 8px;
+    color: #007bff;
+}
+
+.form-style input[type="text"],
+.form-style input[type="date"],
+.form-style input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box; /* Penting agar padding tidak menambah lebar */
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.form-style input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.submit-booking-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #28a745; /* Hijau untuk konfirmasi/submit */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-booking-btn:hover {
+    background-color: #218838;
+}
+
+/* Ringkasan Pembayaran */
+.summary-box {
+    background-color: #f8f9fa; /* Warna latar belakang ringan */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    height: fit-content; /* Agar kotak ringkasan tidak terlalu panjang */
+}
+
+.summary-box h2 {
+    color: #007bff;
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 15px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e9ecef;
+    font-size: 0.95em;
+    color: #555;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2em;
+    font-weight: 700;
+    padding: 15px 0 10px 0;
+    color: #dc3545; /* Merah untuk penekanan harga total */
+}
+
+.note {
+    font-size: 0.85em;
+    color: #6c757d;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Responsif untuk Layar Kecil */
+@media (max-width: 768px) {
+    .booking-grid {
+        grid-template-columns: 1fr; /* Ubah menjadi kolom tunggal */
+    }
+}
+
+/* ======================================= */
+/* 3. STYLE UNTUK HALAMAN ULASAN (REVIEW) */
+/* ======================================= */
+
+.review-main {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.review-header-title {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #007bff;
+}
+
+.review-header-title h1 {
+    color: #007bff;
+    font-weight: 700;
+}
+
+.review-stats-main {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #f39c12; /* Warna rating */
+    margin-top: 10px;
+}
+
+/* Formulir Ulasan */
+.review-form-section {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 40px;
+}
+
+.review-form-section h2 {
+    color: #333;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.form-review-style .form-group {
+    margin-bottom: 20px;
+}
+
+.form-review-style label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.form-review-style label i {
+    margin-right: 8px;
+    color: #007bff;
+}
+
+.form-review-style input[type="text"],
+.form-review-style textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box; 
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.form-review-style textarea {
+    resize: vertical;
+}
+
+/* Styling Rating Stars */
+.rating-stars {
+    display: flex;
+    flex-direction: row-reverse; /* Membalik urutan agar bintang 5 di kiri */
+    justify-content: flex-end;
+}
+
+.rating-stars input[type="radio"] {
+    display: none;
+}
+
+.rating-stars label {
+    font-size: 1.5em; /* Ukuran bintang */
+    color: #ccc; /* Warna default abu-abu */
+    cursor: pointer;
+    transition: color 0.2s;
+    margin-right: 5px;
+}
+
+.rating-stars input[type="radio"]:checked ~ label,
+.rating-stars label:hover,
+.rating-stars label:hover ~ label {
+    color: #f39c12; /* Warna saat dipilih/hover: Emas */
+}
+
+/* Tombol Kirim Ulasan */
+.submit-review-btn {
+    padding: 12px 25px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-review-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Daftar Ulasan */
+.reviews-list-section h2 {
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.review-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.reviewer-name {
+    font-weight: 700;
+    color: #007bff;
+}
+
+.review-rating {
+    color: #f39c12;
+    font-size: 1.1em;
+}
+
+.review-date {
+    font-size: 0.85em;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.review-text {
+    line-height: 1.6;
+    color: #333;
+}
+
+/* =========================================
+   RESPONSIVE NAVBAR (MOBILE FIX)
+   ========================================= */
+
+/* Default: Sembunyikan tombol hamburger di Desktop */
+.menu-toggle {
+    display: none;
+}
+
+/* Tampilan Mobile (Layar < 768px) */
+@media screen and (max-width: 768px) {
+    
+    /* 1. Munculkan Tombol Hamburger */
+    .menu-toggle {
+        display: block;
+        font-size: 1.8em;
+        color: #333;
+        cursor: pointer;
+        position: absolute;
+        right: 20px;
+        top: 15px; /* Sesuaikan agar sejajar logo */
+    }
+
+    /* 2. Sembunyikan Menu Panjang (PENTING!) */
+    nav ul {
+        display: none; /* INI KUNCINYA: Hilang dulu */
+        flex-direction: column;
+        position: absolute;
+        top: 100%; /* Muncul tepat di bawah header */
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 0;
+        text-align: center;
+        z-index: 9999; /* Pastikan di atas konten lain */
+    }
+
+    /* 3. Class untuk Memunculkan Menu (Dipanggil JS) */
+    /* Saat JS menambahkan class 'slide', ubah jadi flex */
+    nav ul.slide {
+        display: flex; 
+        animation: slideDown 0.3s ease forwards;
+    }
+
+    /* Style Link di Mobile */
+    nav ul li {
+        margin: 0;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+    }
+    
+    nav ul li a {
+        display: block; 
+        padding: 15px;
+        width: 100%;
+    }
+
+    /* Penyesuaian Logo di HP */
+    .logo span {
+        font-size: 0.55em; 
+    }
+    .logo img {
+        height: 35px;
+    }
+}
+
+/* Animasi Turun */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

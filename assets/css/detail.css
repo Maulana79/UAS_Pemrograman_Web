@@ -1,0 +1,331 @@
+/* Pastikan ini diletakkan setelah index.css di tag <head> */
+
+/* ==========================================================
+   DETAIL PAGE LAYOUT
+   ========================================================== */
+
+.breadcrumb-section {
+    padding: 15px 5%;
+    background-color: #f7f7f7;
+    margin-top: 80px; /* Jarak dari header */
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.breadcrumb-section p {
+    font-size: 0.85em;
+    color: #666;
+}
+.breadcrumb-section #category-link {
+    font-weight: 600;
+    color: #333;
+}
+
+.detail-container {
+    padding: 40px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.main-content {
+    display: flex;
+    gap: 30px;
+}
+
+/* --------------------
+   KOLOM KIRI (Gallery & Description)
+   -------------------- */
+.gallery-description-area {
+    flex: 2; /* Mengambil 2/3 dari lebar */
+}
+
+.main-photo, .thumb-photo {
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    overflow: hidden;
+}
+
+.main-photo {
+    height: 400px;
+    margin-bottom: 20px;
+}
+
+.thumbnail-photos {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.thumb-photo {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+}
+
+.description-area .destination-name {
+    font-size: 2em;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+}
+
+.description-area .destination-tagline {
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* --------------------
+   KOLOM KANAN (Info & Booking)
+   -------------------- */
+.info-booking-area {
+    flex: 1; /* Mengambil 1/3 dari lebar */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.info-box {
+    background-color: #f0f0f0;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Lokasi Box */
+.location-box .city-label {
+    background-color: #8ac926;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+.location-box p {
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #333;
+}
+.location-box strong {
+    font-weight: 600;
+}
+
+/* Harga & Review Box */
+.price-review-box {
+    text-align: center;
+}
+.price-review-box .price-label {
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 5px;
+}
+.price-review-box .price-value {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.booking-review-buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px 0;
+    border-radius: 5px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border: none;
+    font-size: 1em;
+}
+
+.booking-btn {
+    background-color: #333;
+    color: #fff;
+}
+.booking-btn:hover {
+    background-color: #555;
+}
+
+.review-btn {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+}
+.review-btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* ==========================================================
+   REVIEW SECTION
+   ========================================================== */
+.review-section {
+    padding-top: 50px;
+    margin-top: 50px;
+    border-top: 1px solid #ccc;
+}
+
+.review-title {
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.review-stats {
+    font-size: 1.1em;
+    color: #8ac926;
+    margin-bottom: 30px;
+}
+
+.reviews-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.review-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.reviewer-name {
+    font-size: 1.1em;
+    color: #333;
+}
+
+.review-rating {
+    color: #ffc107; /* Warna kuning untuk bintang */
+}
+
+.review-date {
+    font-size: 0.85em;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.review-text {
+    font-size: 0.95em;
+    color: #555;
+    line-height: 1.5;
+}
+
+.load-more-btn {
+    display: block;
+    width: 250px;
+    margin: 30px auto 0 auto;
+    background-color: #333;
+    color: #fff;
+    border: none;
+}
+.load-more-btn:hover {
+    background-color: #555;
+}
+/* =========================================
+   RESPONSIVE NAVBAR (MOBILE FIX)
+   ========================================= */
+
+/* Default: Sembunyikan tombol hamburger di Desktop */
+.menu-toggle {
+    display: none;
+}
+
+/* Tampilan Mobile (Layar < 768px) */
+@media screen and (max-width: 768px) {
+    
+    /* 1. Munculkan Tombol Hamburger */
+    .menu-toggle {
+        display: block;
+        font-size: 1.8em;
+        color: #333;
+        cursor: pointer;
+        position: absolute;
+        right: 20px;
+        top: 15px; /* Sesuaikan agar sejajar logo */
+    }
+
+    /* 2. Sembunyikan Menu Panjang (PENTING!) */
+    nav ul {
+        display: none; /* INI KUNCINYA: Hilang dulu */
+        flex-direction: column;
+        position: absolute;
+        top: 100%; /* Muncul tepat di bawah header */
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 0;
+        text-align: center;
+        z-index: 9999; /* Pastikan di atas konten lain */
+    }
+
+    /* 3. Class untuk Memunculkan Menu (Dipanggil JS) */
+    /* Saat JS menambahkan class 'slide', ubah jadi flex */
+    nav ul.slide {
+        display: flex; 
+        animation: slideDown 0.3s ease forwards;
+    }
+
+    /* Style Link di Mobile */
+    nav ul li {
+        margin: 0;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+    }
+    
+    nav ul li a {
+        display: block; 
+        padding: 15px;
+        width: 100%;
+    }
+
+    /* Penyesuaian Logo di HP */
+    .logo span {
+        font-size: 0.55em; 
+    }
+    .logo img {
+        height: 35px;
+    }
+}
+
+/* Animasi Turun */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsif untuk HP */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column; /* Tumpuk ke bawah di HP */
+    }
+    .gallery-description-area {
+        width: 100%;
+    }
+    .main-photo {
+        min-height: 300px; /* Di HP agak pendekan */
+        max-height: 400px;
+    }
+    .thumbnail-photos {
+        grid-template-columns: repeat(4, 1fr); /* Di HP 4 kolom saja */
+    }
+}

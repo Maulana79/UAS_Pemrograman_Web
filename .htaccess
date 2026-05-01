@@ -1,0 +1,16 @@
+# --- TAMBAHAN PENTING UNTUK LOGIN ---
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+# ------------------------------------
+
+# ... (kode lama kamu di bawah sini) ...
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+Options -Indexes
+
+ErrorDocument 403 https://errors.infinityfree.net/errors/403/
+ErrorDocument 404 https://errors.infinityfree.net/errors/404/
+ErrorDocument 500 https://errors.infinityfree.net/errors/500/
