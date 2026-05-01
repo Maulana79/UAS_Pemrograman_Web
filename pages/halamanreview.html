@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ulasan Pengunjung | Wisata Borneo Timur</title>
+    
+    <link rel="stylesheet" href="../assets/css/index.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="../assets/js/api.js?v=6"></script>
+	<script src="../assets/js/script.js?v=6"></script>
+</head>
+<body class="review-page"> 
+
+    <header>
+        <div class="navbar-container">
+            <div class="logo">
+                <a href="home.html"><img src="../assets/foto/Logo.png" alt="Logo Wisata Borneo Timur"> </a>
+                <span>WISATA BORNEO TIMUR<br>Jelajahi | Nikmati | Bahagia</span>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="Nature.html">NATURE</a></li>
+                    <li><a href="Adventure.html">Adventure</a></li>
+                    <li><a href="Culture&Heritage.html">CULTURE & HERITAGE</a></li>
+                    <li><a href="FamilyEntertainment.html">FAMILY ENTERTAINMENT</a></li>
+                    <li><a href="home.html#contact-form-area">CONTACT US</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header> 
+    <main class="container review-main" style="margin-top: 80px;">
+        
+        <div class="review-header-title">
+            <h1>⭐ Ulasan Pengunjung</h1>
+            <p>Berikan penilaian jujur Anda untuk membantu wisatawan lain.</p>
+            <div class="review-stats review-stats-main">
+                <p>⭐ 0.0 / 5.0 (Dari 0 Ulasan)</p>
+            </div>
+        </div>
+        
+        <section class="review-form-section">
+            <h2>✍️ Tulis Ulasan Anda</h2>
+            <form id="review-form" class="form-review-style">
+                <div class="form-group">
+                    <label for="reviewer-name"><i class="fas fa-user-circle"></i> Nama Anda:</label>
+                    <input type="text" id="reviewer-name" required placeholder="Contoh: Budi Santoso">
+                </div>
+
+                <div class="form-group rating-group">
+                    <label><i class="fas fa-star"></i> Rating Anda:</label>
+                    <div class="rating-stars">
+                        <input type="radio" id="star5" name="rating" value="5" required><label for="star5">5⭐</label>
+                        <input type="radio" id="star4" name="rating" value="4"><label for="star4">4⭐</label>
+                        <input type="radio" id="star3" name="rating" value="3"><label for="star3">3⭐</label>
+                        <input type="radio" id="star2" name="rating" value="2"><label for="star2">2⭐</label>
+                        <input type="radio" id="star1" name="rating" value="1"><label for="star1">1⭐</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="review-text"><i class="fas fa-comment-dots"></i> Ulasan Lengkap:</label>
+                    <textarea id="review-text" rows="5" required placeholder="Bagaimana pengalaman Anda di destinasi ini?"></textarea>
+                </div>
+
+                <button type="submit" class="btn submit-review-btn">Kirim Ulasan</button>
+            </form>
+        </section>
+        
+        <section class="reviews-list-section">
+            <h2>Semua Ulasan</h2>
+            <div class="reviews-list">
+                <p style="text-align:center; color:#888;">Sedang memuat ulasan...</p>
+            </div>
+        </section>
+    </main>
+    <footer id="contact" class="footer-section">
+        <div class="footer-content">
+            <div class="footer-col">
+                <div class="footer-logo">
+                    <h3>Portal Wisata Kalimantan Timur</h3>
+                </div>
+                <p>Platform pemesanan tiket wisata terpercaya di Indonesia</p>
+            </div>
+            <div class="footer-col">
+                <h4>Kategori Wisata</h4>
+                <ul>
+                    <li><a href="Nature.html">Nature</a></li>
+                    <li><a href="Adventure.html">Adventure</a></li>
+                    <li><a href="Culture&Heritage.html">culture & Heritage</a></li>
+                    <li><a href="FamilyEntertainment.html">Family Entertainment</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Informasi</h4>
+                <ul>
+                    <li><a href="#">Tentang Kami</a></li>
+                    <li><a href="#">Syarat & Ketentuan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hubungi Kami</h4>
+                <div class="contact-info">
+                    <p><i class="fas fa-envelope"></i> info@wisataindonesia.id</p>
+                    <p><i class="fas fa-phone"></i> +62 21 1234 5678</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Samarinda, Indonesia</p>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="copyright">
+            © 2024 Portal Wisata Indonesia. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>

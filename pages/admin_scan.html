@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Validasi Tiket | Admin</title>
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="../assets/js/api.js?v=6"></script>
+    
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    
+    <style>
+        :root { --sidebar-width: 250px; --primary: #1e2a38; --accent: #8ac926; --bg-light: #f4f6f9; }
+        body { display: flex; background: var(--bg-light); font-family: 'Poppins', sans-serif; min-height: 100vh; margin:0; }
+        
+        .sidebar { width: var(--sidebar-width); background: var(--primary); color: white; position: fixed; height: 100%; padding-top: 20px; display: flex; flex-direction: column; }
+        .sidebar h3 { text-align: center; margin-bottom: 30px; letter-spacing: 1px; }
+        .sidebar a { padding: 15px 25px; color: #ccc; text-decoration: none; display: block; transition: 0.3s; font-size: 0.95em; }
+        .sidebar a:hover, .sidebar a.active { background: rgba(255,255,255,0.1); color: white; border-left: 4px solid var(--accent); }
+        .sidebar i { width: 25px; text-align: center; margin-right: 10px; }
+        .logout-btn { margin-top: auto; background: #c0392b; text-align: center; padding: 15px !important; }
+        .logout-btn:hover { background: #e74c3c !important; border-left: none !important; }
+
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); padding: 30px; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        
+        /* Scanner Box */
+        .scan-box {
+            background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%; max-width: 500px; text-align: center; position: relative;
+        }
+        .scan-icon { font-size: 4em; color: var(--primary); margin-bottom: 20px; }
+        .input-group { display: flex; gap: 10px; margin-top: 20px; }
+        .input-group input { flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 1.1em; text-transform: uppercase; text-align: center; }
+        .input-group button { padding: 12px 25px; background: var(--accent); color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1em; }
+        
+        /* CAMERA AREA */
+        #reader { width: 100%; margin-bottom: 20px; display: none; border-radius: 10px; overflow: hidden; border: 2px solid var(--primary); }
+        
+        .btn-cam { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-cam:hover { background: #555; }
+
+        /* Result Area */
+        #result-area { margin-top: 30px; padding: 20px; border-radius: 5px; display: none; text-align: left;}
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+
+        /* Tombol Validasi Masuk */
+        .btn-redeem {
+            display: block; width: 100%; margin-top: 15px;
+            padding: 12px; background: #28a745; color: white;
+            border: none; border-radius: 5px; font-weight: bold; cursor: pointer;
+            font-size: 1.1em;
+        }
+        .btn-redeem:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <script>
+        const token = localStorage.getItem('auth_token');
+        const role = localStorage.getItem('user_role');
+
+        if (!token || role !== 'admin') {
+            alert("Akses Ditolak! Halaman ini khusus Admin.");
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <div class="sidebar">
+        <h3>ADMIN PANEL</h3>
+        
+        <a href="admin_index.html" class="active-check"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="admin_products.html" class="active-check"><i class="fas fa-box"></i> Produk Wisata</a>
+        <a href="admin_transactions.html" class="active-check"><i class="fas fa-receipt"></i> Transaksi</a>
+        <a href="admin_users.html" class="active-check"><i class="fas fa-users"></i> Pengguna</a>
+        <a href="admin_messages.html" class="active-check"><i class="fas fa-envelope"></i> Pesan Masuk</a>
+        <a href="admin_scan.html" class="active-check"><i class="fas fa-qrcode"></i> Scan Tiket</a>
+        
+        <a href="home.html" target="_blank"><i class="fas fa-external-link-alt"></i> Lihat Website</a>
+        <a href="#" class="logout-btn" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="main-content">
+        <div class="scan-box">
+            <div id="reader"></div>
+            
+            <button class="btn-cam" onclick="toggleCamera()"><i class="fas fa-camera"></i> Buka/Tutup Kamera</button>
+
+            <h2 style="margin-top:0;">Validasi Tiket</h2>
+            <p style="color:#666; font-size:0.9em;">Scan QR Code atau masukkan Kode Booking.</p>
+            
+            <form id="scan-form">
+                <div class="input-group">
+                    <input type="text" id="order-id" placeholder="TRX-XXXXXXX" required autocomplete="off">
+                    <button type="submit">CEK</button>
+                </div>
+            </form>
+
+            <div id="result-area"></div>
+        </div>
+    </div>
+
+    <script>
+        // 1. LOGIKA KAMERA (HTML5-QRCode)
+        let html5QrcodeScanner = null;
+        let isCameraOn = false;
+
+        function toggleCamera() {
+            const readerBox = document.getElementById('reader');
+            
+            if (isCameraOn) {
+                if(html5QrcodeScanner) {
+                    html5QrcodeScanner.clear();
+                    html5QrcodeScanner = null;
+                }
+                readerBox.style.display = 'none';
+                isCameraOn = false;
+            } else {
+                readerBox.style.display = 'block';
+                html5QrcodeScanner = new Html5QrcodeScanner(
+                    "reader", { fps: 10, qrbox: 250 }
+                );
+                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+                isCameraOn = true;
+            }
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            document.getElementById('order-id').value = decodedText;
+            toggleCamera(); 
+            document.getElementById('scan-form').dispatchEvent(new Event('submit')); 
+        }
+
+        function onScanFailure(error) {}
+
+        // 2. LOGIKA CEK TIKET (STEP 1: CHECK)
+        document.getElementById('scan-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('order-id');
+            const resultBox = document.getElementById('result-area');
+            const btn = e.target.querySelector('button');
+            
+            const orderId = input.value.trim();
+            if(!orderId) return;
+
+            btn.innerText = "..."; btn.disabled = true;
+            resultBox.style.display = 'none';
+
+            try {
+                // Fetch Mode CHECK
+                const res = await fetch(`${BASE_API_URL}/redeem_ticket.php`, {
+                    method: 'POST',
+                    headers: getHeaders(), 
+                    body: JSON.stringify({ 
+                        order_id: orderId,
+                        mode: 'check' 
+                    })
+                });
+                const json = await res.json();
+
+                resultBox.style.display = 'block';
+                
+                if (json.status === 'success') {
+                    // TIKET DITEMUKAN (Bisa Valid / Bisa Expired / Bisa Sudah Dipakai)
+                    const data = json.data;
+                    
+                    if (data.valid) {
+                        // KASUS: VALID & SIAP MASUK
+                        resultBox.className = 'success';
+                        resultBox.innerHTML = `
+                            <div style="text-align:center; margin-bottom:10px;"><i class="fas fa-ticket-alt" style="font-size:3em; color:#155724;"></i></div>
+                            <h3 style="margin:0 0 10px 0; text-align:center;">TIKET DITEMUKAN</h3>
+                            <hr style="border:0; border-top:1px dashed #155724; margin:10px 0;">
+                            <p><strong>Pengunjung:</strong> ${data.visitor}</p>
+                            <p><strong>Wisata:</strong> ${data.ticket}</p>
+                            <p><strong>Jumlah:</strong> <span style="font-size:1.5em; font-weight:bold;">${data.quantity} Orang</span></p>
+                            <p><strong>Tanggal:</strong> ${data.visit_date}</p>
+                            
+                            <button onclick="executeRedeem('${orderId}')" class="btn-redeem">
+                                <i class="fas fa-check"></i> IZINKAN MASUK (${data.quantity} Org)
+                            </button>
+                        `;
+                    } else {
+                        // KASUS: SUDAH DIPAKAI / EXPIRED (Tampil Warning)
+                        resultBox.className = 'error';
+                        resultBox.innerHTML = `
+                            <div style="text-align:center; margin-bottom:10px;"><i class="fas fa-exclamation-triangle" style="font-size:3em;"></i></div>
+                            <h3 style="margin:0; text-align:center;">${json.data.message}</h3>
+                            <p style="text-align:center;"><strong>Pengunjung:</strong> ${data.visitor}</p>
+                        `;
+                    }
+
+                } else {
+                    // ERROR (Tidak ketemu / Belum bayar)
+                    resultBox.className = 'error';
+                    resultBox.innerHTML = `
+                        <div style="text-align:center; margin-bottom:10px;"><i class="fas fa-times-circle" style="font-size:3em;"></i></div>
+                        <h3 style="margin:0; text-align:center;">GAGAL</h3>
+                        <p style="text-align:center;">${json.message}</p>
+                    `;
+                }
+            } catch (err) {
+                alert("Error koneksi");
+            } finally {
+                btn.innerText = "CEK"; btn.disabled = false;
+            }
+        });
+
+        // 3. LOGIKA REDEEM 
+        async function executeRedeem(orderId) {
+            if(!confirm("Yakin validasi tiket ini? Tiket akan hangus setelah ini.")) return;
+
+            const resultBox = document.getElementById('result-area');
+            resultBox.innerHTML = '<p style="text-align:center;">Memproses validasi...</p>';
+
+            try {
+                const res = await fetch(`${BASE_API_URL}/redeem_ticket.php`, {
+                    method: 'POST',
+                    headers: getHeaders(), 
+                    body: JSON.stringify({ 
+                        order_id: orderId,
+                        mode: 'execute' 
+                    })
+                });
+                const json = await res.json();
+
+                if (json.status === 'success') {
+                    resultBox.className = 'success';
+                    resultBox.innerHTML = `
+                        <div style="text-align:center; margin-bottom:10px;"><i class="fas fa-check-circle" style="font-size:3em;"></i></div>
+                        <h3 style="margin:0 0 10px 0; text-align:center;">SUKSES VALIDASI</h3>
+                        <p style="text-align:center;">${json.data.message}</p>
+                        <p style="text-align:center;">Selamat Menikmati Wisata!</p>
+                        <button onclick="location.reload()" style="width:100%; padding:10px; margin-top:10px;">Scan Berikutnya</button>
+                    `;
+                    document.getElementById('order-id').value = '';
+                } else {
+                    alert(json.message);
+                }
+            } catch (err) {
+                alert("Gagal memproses validasi");
+            }
+        }
+
+        window.logoutAdmin = () => {
+            if(confirm("Keluar dari admin?")) {
+                localStorage.removeItem('auth_token');
+                window.location.href = 'login.html';
+            }
+        };
+    </script>
+</body>
+</html>

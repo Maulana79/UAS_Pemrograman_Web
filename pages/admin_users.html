@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Pengguna | Admin</title>
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="../assets/js/api.js?v=6"></script>
+    
+    <style>
+        :root { --sidebar-width: 250px; --primary: #1e2a38; --accent: #8ac926; --bg-light: #f4f6f9; }
+        body { display: flex; background: var(--bg-light); font-family: 'Poppins', sans-serif; min-height: 100vh; margin:0; }
+        
+        .sidebar {
+            width: var(--sidebar-width); background: var(--primary); color: white;
+            position: fixed; height: 100%; padding-top: 20px; display: flex; flex-direction: column;
+        }
+        .sidebar h3 { text-align: center; margin-bottom: 30px; letter-spacing: 1px; }
+        .sidebar a {
+            padding: 15px 25px; color: #ccc; text-decoration: none; display: block; transition: 0.3s; font-size: 0.95em;
+        }
+        .sidebar a:hover, .sidebar a.active { background: rgba(255,255,255,0.1); color: white; border-left: 4px solid var(--accent); }
+        .sidebar i { width: 25px; text-align: center; margin-right: 10px; }
+        
+        .logout-btn { margin-top: auto; background: #c0392b; text-align: center; padding: 15px !important; }
+        .logout-btn:hover { background: #e74c3c !important; border-left: none !important; }
+
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); padding: 30px; }
+        h2 { margin-bottom: 20px; color: #333; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+
+        .table-container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9em; }
+        th { background: #f8f9fa; font-weight: 600; color: #555; }
+        tr:hover { background: #f1f1f1; }
+    </style>
+</head>
+<body>
+    <script>
+        // Cek apakah token ada DAN role-nya admin
+        const token = localStorage.getItem('auth_token');
+        const role = localStorage.getItem('user_role');
+
+        if (!token || role !== 'admin') {
+            alert("Akses Ditolak! Halaman ini khusus Admin.");
+            window.location.href = 'login.html'; // Tendang balik ke login umum
+        }
+    </script>
+
+	<div class="sidebar">
+        <h3>ADMIN PANEL</h3>
+        
+        <a href="admin_index.html" class="active-check"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        
+        <a href="admin_products.html" class="active-check"><i class="fas fa-box"></i> Produk Wisata</a>
+        <a href="admin_transactions.html" class="active-check"><i class="fas fa-receipt"></i> Transaksi</a>
+        <a href="admin_users.html" class="active-check"><i class="fas fa-users"></i> Pengguna</a>
+        <a href="admin_messages.html" class="active-check"><i class="fas fa-envelope"></i> Pesan Masuk</a>
+        
+        <a href="admin_scan.html" class="active-check"><i class="fas fa-qrcode"></i> Scan Tiket</a>
+        
+        <a href="home.html" target="_blank"><i class="fas fa-external-link-alt"></i> Lihat Website</a>
+        <a href="#" class="logout-btn" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="main-content">
+        <h2>Daftar Pengguna Terdaftar</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama Lengkap</th>
+                        <th>Email</th>
+                        <th>No. Telepon</th>
+                        <th>Role</th>
+                        <th>Tanggal Gabung</th>
+                    </tr>
+                </thead>
+                <tbody id="users-body">
+                    <tr><td colspan="6" style="text-align:center; padding:30px;">Sedang memuat data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function loadUsers() {
+            const tbody = document.getElementById('users-body');
+            try {
+                const res = await fetch(`${BASE_API_URL}/admin_get_users.php`, { headers: getHeaders() });
+                const json = await res.json();
+                
+                tbody.innerHTML = '';
+                json.data.forEach(u => {
+                    const row = `
+                        <tr>
+                            <td>#${u.id}</td>
+                            <td><strong>${u.name}</strong></td>
+                            <td>${u.email}</td>
+                            <td>${u.phone || '-'}</td>
+                            <td><span style="background:#eee; padding:4px 8px; border-radius:4px; font-size:0.85em; text-transform:capitalize;">${u.role || 'User'}</span></td>
+                            <td>${u.created_at}</td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } catch(e) { console.error(e); }
+        }
+
+        window.logoutAdmin = () => {
+            if(confirm("Keluar dari admin?")) {
+                localStorage.removeItem('admin_token');
+                window.location.href = 'login.html';
+            }
+        };
+
+        loadUsers();
+        // LOGIKA ACTIVE SIDEBAR OTOMATIS
+        const currentPage = window.location.pathname.split("/").pop();
+        const sidebarLinks = document.querySelectorAll('.sidebar a');
+        
+        sidebarLinks.forEach(link => {
+            // Hapus active bawaan (jika ada)
+            link.classList.remove('active');
+            
+            // Cek jika href link sama dengan nama file saat ini
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

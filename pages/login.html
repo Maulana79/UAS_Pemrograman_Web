@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Wisata Borneo</title>
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <script src="../assets/js/api.js?v=6"></script>
+    <script src="../assets/js/script.js?v=6"></script>
+    <style>
+        .login-container {
+            padding: 20px;
+            width: 400px; 
+        }
+
+        label {
+            display: block;      
+            margin-bottom: 5px; 
+            font-weight: bold;
+            text-align: left;   
+        }
+
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;          
+            padding: 10px;         
+            margin-bottom: 15px;    
+            border: 1px solid #ccc; 
+            border-radius: 4px;
+            box-sizing: border-box; 
+        }
+
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body style="background:#f0f5f1; display:flex; justify-content:center; align-items:center; height:100vh;">
+
+    <div class="booking-form-container" style="background:white; padding:40px; border-radius:10px; width:100%; max-width:400px; box-shadow:0 4px 10px rgba(0,0,0,0.2);">
+        <h2 style="text-align:center; color:#333;">Login</h2>
+        <form id="form-login" class="form-style">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="btn submit-booking-btn">Masuk</button>
+            <div style="text-align:right; margin-bottom:15px;">
+                <a href="forgot_password.html" style="font-size:0.9em; color:#007bff; text-decoration:none;">Lupa Password?</a>
+            </div>
+            <p style="margin-top:15px; text-align:center;">Belum punya akun? <a href="register.html">Daftar disini</a></p>
+        </form>
+    </div>
+
+    <script>
+document.getElementById('form-login').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = e.target.querySelector('button');
+            
+            btn.innerText = "Loading..."; btn.disabled = true;
+
+            try {
+                // Panggil API Login
+                const res = await fetch(`${BASE_API_URL}/auth_login.php`, {
+                    method: 'POST',
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "X-Api-Key": API_KEY 
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (data.status === 'success') {
+                    alert('Login Berhasil!');
+                    
+                    // 1. SIMPAN TOKEN & DATA PENTING
+                    localStorage.setItem('auth_token', data.data.token);
+                    localStorage.setItem('user_name', data.data.user.name);
+                    localStorage.setItem('user_role', data.data.user.role); // Simpan Role
+                    
+                    if (data.data.user.avatar) {
+                        localStorage.setItem('user_avatar', data.data.user.avatar);
+                    } else {
+                        // Kalau user gak punya foto, hapus data lama biar bersih
+                        localStorage.removeItem('user_avatar');
+                    }
+                    
+                    // 2. REDIRECT SESUAI ROLE (LOGIKA UTAMA)
+                    if (data.data.user.role === 'admin') {
+                        // Jika Admin -> Masuk ke Dashboard Admin
+                        // Simpan juga 'admin_token' 
+                        localStorage.setItem('admin_token', data.data.token);
+                        window.location.href = 'admin_index.html';
+                    } else {
+                        // Jika User Biasa -> Masuk ke Home
+                        window.location.href = 'home.html';
+                    }
+                } else {
+                    alert('Gagal: ' + data.message);
+                }
+            } catch (err) { 
+                console.error(err);
+                alert('Koneksi Error'); 
+            } finally {
+                btn.innerText = "Masuk"; btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

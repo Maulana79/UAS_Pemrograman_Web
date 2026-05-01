@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun | Wisata Borneo Timur</title>
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <script src="../assets/js/api.js?v=6"></script>
+    <script src="../assets/js/script.js?v=6"></script>
+    <style>
+        input[type="text"],      
+        input[type="email"],    
+        input[type="password"],  
+        input[type="tel"],       
+        input[type="number"] {   
+
+            width: 100%;             
+            padding: 10px;           
+            margin-bottom: 15px;     
+            border: 1px solid #ccc;  
+            border-radius: 5px;      
+            box-sizing: border-box; 
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838; 
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            text-align: left;
+        }
+    </style>
+</head>
+<body style="background:#f0f5f1; display:flex; justify-content:center; align-items:center; min-height:100vh; padding: 20px;">
+
+    <div class="booking-form-container" style="background:white; padding:40px; border-radius:10px; width:100%; max-width:450px; box-shadow:0 4px 10px rgba(0,0,0,0.2);">
+        <h2 style="text-align:center; color:#333; margin-bottom:25px;">Buat Akun Baru</h2>
+        
+        <form id="form-register" class="form-style">
+            <div class="form-group">
+                <label for="reg-name"><i class="fas fa-user"></i> Nama Lengkap</label>
+                <input type="text" id="reg-name" required placeholder="Masukkan nama lengkap">
+            </div>
+            
+            <div class="form-group">
+                <label for="reg-email"><i class="fas fa-envelope"></i> Alamat Email</label>
+                <input type="email" id="reg-email" required placeholder="contoh@email.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="reg-phone"><i class="fas fa-phone"></i> Nomor Telepon/WA</label>
+                <input type="tel" id="reg-phone" required placeholder="0812xxxxxxxx">
+            </div>
+
+            <div class="form-group">
+                <label for="reg-password"><i class="fas fa-lock"></i> Password</label>
+                <input type="password" id="reg-password" required placeholder="Minimal 6 karakter" minlength="6">
+            </div>
+            
+            <button type="submit" class="btn submit-booking-btn" style="margin-top:15px;">Daftar Sekarang</button>
+            
+            <p style="margin-top:20px; text-align:center; color:#666;">
+                Sudah punya akun? <a href="login.html" style="color:#8ac926; font-weight:600;">Login disini</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const registerForm = document.getElementById('form-register');
+            
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault(); // Mencegah reload halaman
+
+                // 1. Ambil data dari input
+                const name = document.getElementById('reg-name').value;
+                const email = document.getElementById('reg-email').value;
+                const phone = document.getElementById('reg-phone').value;
+                const password = document.getElementById('reg-password').value;
+
+                // 2. Validasi Sederhana (Opsional tapi disarankan)
+                if (password.length < 6) {
+                    alert("Password minimal 6 karakter!");
+                    return;
+                }
+
+                // 3. Ubah tombol jadi loading
+                const submitBtn = registerForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerText;
+                submitBtn.innerText = 'Memproses...';
+                submitBtn.disabled = true;
+
+                try {
+                    // 4. Kirim data ke API Backend (auth_register.php)
+                    const response = await fetch(`${BASE_API_URL}/auth_register.php`, {
+                        method: 'POST',
+                        headers: getHeaders(), // Menggunakan helper dari api.js
+                        body: JSON.stringify({
+                            name: name,
+                            email: email,
+                            password: password,
+                            phone: phone
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    // 5. Cek Hasil
+                    if (result.status === 'success') {
+                        alert('Registrasi Berhasil! Silakan login dengan akun baru Anda.');
+                        window.location.href = 'login.html'; // Redirect ke halaman login
+                    } else {
+                        // Tampilkan pesan error dari backend (misal: Email sudah terdaftar)
+                        alert('Registrasi Gagal: ' + result.message);
+                    }
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan koneksi ke server.');
+                } finally {
+                    // 6. Kembalikan tombol seperti semula
+                    submitBtn.innerText = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

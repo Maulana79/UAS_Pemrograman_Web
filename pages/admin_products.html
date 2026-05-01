@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Produk | Admin</title>
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="../assets/js/api.js?v=6"></script>
+    
+    <style>
+        :root { --sidebar-width: 250px; --primary: #1e2a38; --accent: #8ac926; --bg-light: #f4f6f9; }
+        body { display: flex; background: var(--bg-light); font-family: 'Poppins', sans-serif; min-height: 100vh; margin:0; }
+        
+        .sidebar {
+            width: var(--sidebar-width); background: var(--primary); color: white;
+            position: fixed; height: 100%; padding-top: 20px; display: flex; flex-direction: column;
+            z-index: 100; 
+        }
+        .sidebar h3 { text-align: center; margin-bottom: 30px; letter-spacing: 1px; }
+        .sidebar a {
+            padding: 15px 25px; color: #ccc; text-decoration: none; display: block; transition: 0.3s; font-size: 0.95em;
+        }
+        .sidebar a:hover, .sidebar a.active { background: rgba(255,255,255,0.1); color: white; border-left: 4px solid var(--accent); }
+        .sidebar i { width: 25px; text-align: center; margin-right: 10px; }
+        .logout-btn { margin-top: auto; background: #c0392b; text-align: center; padding: 15px !important; }
+        .logout-btn:hover { background: #e74c3c !important; border-left: none !important; }
+
+        /* Content */
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); padding: 30px; }
+        
+        /* Header */
+        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .btn-add { 
+            background: var(--accent); color: white; padding: 10px 20px; 
+            border-radius: 5px; border: none; cursor: pointer; font-weight: 600; 
+            display: flex; align-items: center; gap: 8px;
+        }
+        
+        /* Table */
+        .table-container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9em; }
+        th { background: #f8f9fa; color: #555; font-weight: 600; }
+        tr:hover { background: #f1f1f1; }
+        .thumb-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #ddd; }
+        
+        .action-btn { padding: 6px 12px; border-radius: 4px; border: none; cursor: pointer; margin-right: 5px; }
+        .btn-edit { background: #f39c12; color: white; }
+        .btn-delete { background: #e74c3c; color: white; }
+
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 999; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.6); 
+            overflow: auto; 
+        }
+        
+        .modal-content { 
+            background: white; 
+            margin: 30px auto; 
+            padding: 25px; 
+            border-radius: 10px; 
+            width: 90%; 
+            max-width: 600px; 
+            position: relative; 
+            animation: slideDown 0.3s;
+            
+            max-height: 90vh; 
+            overflow-y: auto;
+        }
+
+        @keyframes slideDown { from {top: -50px; opacity: 0;} to {top: 0; opacity: 1;} }
+        
+        .close { position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer; color: #aaa; }
+        .close:hover { color: #333; }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .full-width { grid-column: span 2; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9em; color: #555; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-family: inherit;
+        }
+        
+        .btn-save { 
+            background: var(--primary); color: white; width: 100%; padding: 12px; 
+            border: none; border-radius: 5px; cursor: pointer; font-size: 1em; 
+            font-weight: bold; margin-top: 20px; 
+        }
+        .btn-save:hover { background: #2c3e50; }
+    </style>
+</head>
+<body>
+
+    <script>
+        // Cek apakah token ada DAN role-nya admin
+        const token = localStorage.getItem('auth_token');
+        const role = localStorage.getItem('user_role');
+
+        if (!token || role !== 'admin') {
+            alert("Akses Ditolak! Halaman ini khusus Admin.");
+            window.location.href = 'login.html'; // Tendang balik ke login umum
+        }
+    </script>
+
+	<div class="sidebar">
+        <h3>ADMIN PANEL</h3>
+        
+        <a href="admin_index.html" class="active-check"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        
+        <a href="admin_products.html" class="active-check"><i class="fas fa-box"></i> Produk Wisata</a>
+        <a href="admin_transactions.html" class="active-check"><i class="fas fa-receipt"></i> Transaksi</a>
+        <a href="admin_users.html" class="active-check"><i class="fas fa-users"></i> Pengguna</a>
+        <a href="admin_messages.html" class="active-check"><i class="fas fa-envelope"></i> Pesan Masuk</a>
+        
+        <a href="admin_scan.html" class="active-check"><i class="fas fa-qrcode"></i> Scan Tiket</a>
+        
+        <a href="home.html" target="_blank"><i class="fas fa-external-link-alt"></i> Lihat Website</a>
+        <a href="#" class="logout-btn" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+
+    <div class="main-content">
+        <div class="header-flex">
+            <h2>Manajemen Produk</h2>
+            <button class="btn-add" onclick="openModal('add')"><i class="fas fa-plus"></i> Tambah Baru</button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th width="80">Gambar</th>
+                        <th>Nama Wisata</th>
+                        <th>Kategori</th>
+                        <th>Harga</th>
+                        <th>Lokasi</th>
+                        <th width="120">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="product-table-body">
+                    <tr><td colspan="6" style="text-align:center; padding: 30px;">Sedang memuat data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" style="margin-bottom: 20px; color: var(--primary); border-bottom:1px solid #eee; padding-bottom:10px;">Tambah Produk</h2>
+            
+            <form id="productForm">
+                <input type="hidden" id="prod-id" name="id">
+                <input type="hidden" name="api_key" id="api_key_field"> 
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nama Wisata</label>
+                        <input type="text" name="name" id="prod-name" required placeholder="Nama Tempat">
+                    </div>
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <select name="category" id="prod-category">
+                            <option value="nature">Nature</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="culture">Culture</option>
+                            <option value="family">Family</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Harga (Rp)</label>
+                        <input type="number" name="price" id="prod-price" required placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Kota</label>
+                        <input type="text" name="city" id="prod-city" placeholder="Contoh: berau">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Latitude</label>
+                        <input type="text" name="latitude" id="prod-lat" placeholder="-1.2345">
+                    </div>
+                    <div class="form-group">
+                        <label>Longitude</label>
+                        <input type="text" name="longitude" id="prod-long" placeholder="116.8888">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Jam Operasional</label>
+                        <input type="text" name="hours" id="prod-hours" placeholder="Contoh: 08:00 - 17:00 WITA">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Deskripsi Singkat</label>
+                        <textarea name="description" id="prod-desc" rows="2" placeholder="Deskripsi menarik..."></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Alamat Lengkap</label>
+                        <textarea name="address" id="prod-addr" rows="2" placeholder="Jalan..."></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Upload Foto (Opsional saat Edit)</label>
+                        <input type="file" name="images[]" id="prod-image" accept="image/*" multiple>
+                        <small style="color:#888;">*Pilih beberapa file sekaligus. Gambar pertama akan jadi foto utama.</small>
+                    </div>
+                </div>
+                <button type="submit" class="btn-save">SIMPAN DATA</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Active Sidebar Otomatis
+        const currentPage = window.location.pathname.split("/").pop();
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.classList.remove('active');
+            if(link.getAttribute('href') === currentPage) link.classList.add('active');
+        });
+
+        const tableBody = document.getElementById('product-table-body');
+        document.getElementById('api_key_field').value = API_KEY; 
+
+        // LOAD DATA
+        async function loadProducts() {
+            try {
+                const res = await fetch(`${BASE_API_URL}/get_products.php`, { headers: getHeaders() });
+                const json = await res.json();
+                
+                tableBody.innerHTML = '';
+                if(json.data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Data Kosong</td></tr>';
+                    return;
+                }
+
+				json.data.forEach(p => {
+                    let imgPath = p.image_url;
+                    
+                    // BENAR: Mundur dulu (../) baru masuk assets/foto
+                    if (!imgPath.startsWith('http')) imgPath = `../assets/foto/${imgPath}`;
+                    
+                    const row = `
+                        <tr>
+                            <td><img src="${imgPath}" class="thumb-img" onerror="this.src='../assets/foto/default.jpg'"></td>
+                            <td><strong>${p.name}</strong></td>
+                            <td><span style="background:#e1f5fe; color:#0288d1; padding:4px 8px; border-radius:4px; font-size:0.8em; text-transform:uppercase;">${p.category}</span></td>
+                            <td>${formatRupiah(p.price)}</td>
+                            <td>${p.city ? p.city.toUpperCase() : '-'}</td>
+                            <td>
+                                <button class="action-btn btn-edit" onclick='editProduct(${JSON.stringify(p)})'><i class="fas fa-edit"></i></button>
+                                <button class="action-btn btn-delete" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            } catch (err) { console.error(err); }
+        }
+
+        // MODAL
+        window.openModal = (mode) => {
+            document.getElementById('productModal').style.display = 'block';
+            if (mode === 'add') {
+                document.getElementById('modalTitle').innerText = "Tambah Produk Baru";
+                document.getElementById('productForm').reset();
+                document.getElementById('prod-id').value = '';
+            }
+        };
+        window.closeModal = () => {
+            document.getElementById('productModal').style.display = 'none';
+        }
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target == modal) modal.style.display = "none";
+        }
+
+        // EDIT
+        window.editProduct = (data) => {
+            openModal('edit');
+            document.getElementById('modalTitle').innerText = "Edit Produk: " + data.name;
+            
+            document.getElementById('prod-id').value = data.id;
+            document.getElementById('prod-name').value = data.name;
+            document.getElementById('prod-category').value = data.category;
+            document.getElementById('prod-price').value = data.price;
+            document.getElementById('prod-city').value = data.city;
+            
+            // Isi Lat/Long
+            document.getElementById('prod-lat').value = data.latitude || '';
+            document.getElementById('prod-long').value = data.longitude || '';
+
+            document.getElementById('prod-hours').value = data.hours;
+            document.getElementById('prod-desc').value = data.description;
+            document.getElementById('prod-addr').value = data.address;
+        };
+
+        // SUBMIT
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.innerText = "Menyimpan..."; btn.disabled = true;
+
+            const formData = new FormData(e.target);
+            const id = document.getElementById('prod-id').value;
+            const endpoint = id ? 'admin_update.php' : 'admin_create.php';
+
+            try {
+                const headers = {}; 
+                headers['X-Api-Key'] = API_KEY; 
+
+                const res = await fetch(`${BASE_API_URL}/${endpoint}`, {
+                    method: 'POST',
+                    headers: headers, 
+                    body: formData
+                });
+                const json = await res.json();
+                
+                if(json.status === 'success') {
+                    alert("Data berhasil disimpan!");
+                    closeModal();
+                    loadProducts();
+                } else {
+                    alert("Gagal: " + json.message);
+                }
+            } catch(err) { alert("Error Sistem"); console.error(err); }
+            finally { btn.innerText = "SIMPAN DATA"; btn.disabled = false; }
+        });
+
+        // DELETE
+        window.deleteProduct = async (id) => {
+            if(!confirm("Yakin hapus data ini?")) return;
+            try {
+                const res = await fetch(`${BASE_API_URL}/admin_delete.php`, {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/x-www-form-urlencoded", "X-Api-Key": API_KEY },
+                    body: `id=${id}`
+                });
+                const json = await res.json();
+                if(json.status === 'success') loadProducts();
+                else alert(json.message);
+            } catch(err) { alert("Error"); }
+        };
+
+        window.logoutAdmin = () => {
+            if(confirm("Keluar dari admin?")) {
+                localStorage.removeItem('admin_token');
+                window.location.href = 'login.html';
+            }
+        };
+
+        loadProducts();
+    </script>
+</body>
+</html>

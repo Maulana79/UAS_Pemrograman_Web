@@ -1,0 +1,111 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Wisata Alam (Nature Tourism)</title>
+        <link rel="stylesheet" href="../assets/css/index.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script src="../assets/js/api.js?v=6"></script>
+		<script src="../assets/js/script.js?v=6"></script>
+    </head>
+    <body>
+        <header>
+            <div class="navbar-container">
+                <div class="logo">
+                    <a href="home.html"><img src="../assets/foto/Logo.png" alt="Logo Wisata Borneo Timur"> </a>
+                    <span>WISATA BORNEO TIMUR<br>Jelajahi | Nikmati | Bahagia</span>
+                </div>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <nav>
+                    <ul>
+                    <li><a href="Nature.html" class="active">NATURE</a></li>
+                    <li><a href="Adventure.html">ADVENTURE</a></li>
+                    <li><a href="Culture&Heritage.html">CULTURE & HERITAGE</a></li>
+                    <li><a href="FamilyEntertainment.html">FAMILY ENTERTAINMENT</a></li>
+                    <li><a href="home.html#contact-form-area">CONTACT US</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header> 
+
+        <section class="nature-hero-banner">
+            <div class="hero-bg-image" style="background-image: url('../assets/foto/bannernature.jpg');"></div>
+            <div class="hero-content">
+                <h1>WISATA ALAM (NATURE TOURISM)</h1>
+                <p>NIKMATI KEINDAHAN ALAM DAN KEINDAHAN DI DALAMNYA</p>
+            </div>
+        </section>
+
+        <section class="destinasi-kategori-section" id="page-category" data-category="nature">
+            <h2 class="section-title">NATURE TOURISM</h2>
+            <div class="content-wrapper">
+                
+                <div class="filter-panel">
+                    <h3>CATEGORY</h3>
+                    <div class="select-wrapper">
+                        <select id="city-filter" class="city-select">
+                            <option value="all">ALL CATEGORY</option>
+                            <option value="berau">BERAU</option>
+                            <option value="kutai">KUTAI</option>
+                            <option value="balikpapan">BALIKPAPAN</option>
+                            <option value="samarinda">SAMARINDA</option>
+                            <option value="paser">PASER</option>
+                            <option value="bontang">BONTANG</option>
+                            <option value="penajam">PENAJAM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="destination-grid" id="destination-list">
+                    </div>
+            </div>
+
+            <div class="pagination">
+            </div>
+        </section>
+
+        <footer id="contact" class="footer-section">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <h3>Portal Wisata Kalimantan Timur</h3>
+                    </div>
+                    <p>Platform pemesanan tiket wisata terpercaya di Indonesia</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Kategori Wisata</h4>
+                    <ul>
+                    <li><a href="Nature.html">Nature</a></li>
+                    <li><a href="Adventure.html">Adventure</a></li>
+                    <li><a href="Culture&Heritage.html">culture & Heritage</a></li>
+                    <li><a href="FamilyEntertainment.html">Family Entertainment</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Informasi</h4>
+                    <ul>
+                        <li><a href="#">Tentang Kami</a></li>
+                        <li><a href="#">Syarat & Ketentuan</a></li>
+                        <li><a href="#">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Hubungi Kami</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@wisataindonesia.id</p>
+                        <p><i class="fas fa-phone"></i> +62 21 1234 5678</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Samarinda, Indonesia</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="copyright">
+                © 2024 Portal Wisata Indonesia. All rights reserved.
+            </div>
+        </footer>
+    </body>
+    </html>
